@@ -1,4 +1,5 @@
 // Sample exoplanet data
+
 const exoplanetData = [
     { name: "Kepler-22b", star: "Kepler-22", distance: 620, radius: 2.4 },
     { name: "Proxima Centauri b", star: "Proxima Centauri", distance: 4.24, radius: 1.1 },
@@ -42,6 +43,47 @@ const filterExoplanets = (searchTerm) => {
         exoplanet.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
 };
+// Function to draw a procedurally generated planet
+
+// Function to create a procedurally generated planet
+const createPlanet = () => {
+    // Create a scene
+    const scene = new THREE.Scene();
+
+    // Create a camera
+    const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
+    camera.position.z = 2; // Position the camera
+
+    // Create a renderer
+    const renderer = new THREE.WebGLRenderer({ alpha: true }); // Alpha to allow transparency
+    renderer.setSize(200, 200); // Set size
+    document.getElementById('planet-container').appendChild(renderer.domElement); // Attach to DOM
+
+    // Create the planet geometry
+    const geometry = new THREE.SphereGeometry(0.5, 32, 32); // Sphere with radius 0.5
+    const material = new THREE.MeshStandardMaterial({ color: 0xffffff }); // Base material
+    const planet = new THREE.Mesh(geometry, material);
+    scene.add(planet); // Add planet to the scene
+
+    // Add a light source
+    const light = new THREE.PointLight(0xffffff, 1, 100);
+    light.position.set(0, 0, 5);
+    scene.add(light); // Add light to the scene
+
+    // Create a function to animate the planet
+    const animate = () => {
+        requestAnimationFrame(animate);
+        planet.rotation.y += 0.01; // Rotate the planet
+        renderer.render(scene, camera); // Render the scene
+    };
+
+    // Start the animation
+    animate();
+};
+
+// Call the function to create the planet
+createPlanet();
+
 
 // Event listener for search input
 document.getElementById("search-input").addEventListener("input", (event) => {
