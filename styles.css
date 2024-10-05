@@ -1,0 +1,124 @@
+/* General styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #1a1a1a;
+    color: #fff;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 800px;
+    width: 100%;
+    text-align: center;
+    padding: 20px;
+}
+
+/* Header with shiny text */
+header {
+    padding: 20px;
+    margin-bottom: 30px;
+}
+
+/* Shiny metallic text */
+header h1 {
+    font-size: 2.5rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    background: linear-gradient(90deg, #bb86fc, #ffffff, #bb86fc);
+    background-size: 200%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shine 2s linear infinite;
+}
+
+/* Shiny effect animation */
+@keyframes shine {
+    0% {
+        background-position: 200%;
+    }
+    100% {
+        background-position: -200%;
+    }
+}
+
+/* Round search bar */
+.search-bar {
+    margin-bottom: 20px;
+}
+
+#search-input {
+    width: 80%;
+    padding: 15px;
+    font-size: 1.2rem;
+    border: 2px solid #bb86fc;
+    border-radius: 50px;
+    background-color: #2a2a2a;
+    color: #fff;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+#search-input:focus {
+    border-color: #6200ea;
+}
+
+/* Exoplanet List */
+.exoplanet-list {
+    list-style-type: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Credit card style divs for exoplanets */
+.exoplanet-item {
+    background: #333;
+    border-radius: 15px;
+    width: 100%;
+    max-width: 600px;
+    padding: 20px;
+    margin: 15px 0;
+    border: 2px solid #6200ea;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    text-align: left;
+}
+
+.exoplanet-item:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+.exoplanet-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.exoplanet-name {
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #bb86fc;
+}
+
+.exoplanet-details {
+    font-size: 1.1rem;
+    color: #ccc;
+}
+
+.exoplanet-details p {
+    margin: 5px 0;
+}
