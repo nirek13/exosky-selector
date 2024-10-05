@@ -7,7 +7,7 @@
 
 body {
     font-family: Arial, sans-serif;
-    background-color: #1a1a1a;
+    background: radial-gradient(circle at center, #1a1a1a, #000000); /* Deep space-like gradient */
     color: #fff;
     margin: 0;
     padding: 0;
@@ -15,6 +15,27 @@ body {
     justify-content: center;
     align-items: flex-start;
     min-height: 100vh;
+    overflow: hidden;
+    position: relative;
+}
+
+/* Add small moving stars in the background */
+body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: transparent url('https://www.transparenttextures.com/patterns/bedge-grunge.png') repeat; /* A transparent starry pattern */
+    opacity: 0.3; /* Subtle star effect */
+    animation: moveStars 30s linear infinite;
+    z-index: -1;
+}
+
+@keyframes moveStars {
+    0% { background-position: 0 0; }
+    100% { background-position: 1000px 1000px; }
 }
 
 .container {
@@ -24,15 +45,15 @@ body {
     padding: 20px;
 }
 
-/* Header with shiny text */
+/* Header with shiny metallic space-like text */
 header {
     padding: 20px;
     margin-bottom: 30px;
 }
 
-/* Shiny metallic text */
+/* Shiny metallic text with nebula glow */
 header h1 {
-    font-size: 2.5rem;
+    font-size: 3rem;
     text-transform: uppercase;
     letter-spacing: 2px;
     background: linear-gradient(90deg, #bb86fc, #ffffff, #bb86fc);
@@ -40,6 +61,22 @@ header h1 {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     animation: shine 2s linear infinite;
+    position: relative;
+    z-index: 1;
+}
+
+/* Glow effect around the header text */
+header h1::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(187, 134, 252, 0.6), rgba(0, 0, 0, 0));
+    z-index: -1;
+    transform: translate(-50%, -50%);
+    filter: blur(15px);
 }
 
 /* Shiny effect animation */
@@ -52,7 +89,7 @@ header h1 {
     }
 }
 
-/* Round search bar */
+/* Round search bar with spacey glow */
 .search-bar {
     margin-bottom: 20px;
 }
@@ -67,10 +104,12 @@ header h1 {
     color: #fff;
     outline: none;
     transition: all 0.3s ease;
+    box-shadow: 0 0 15px rgba(136, 84, 208, 0.5); /* Spacey glow */
 }
 
 #search-input:focus {
     border-color: #6200ea;
+    box-shadow: 0 0 20px rgba(136, 84, 208, 0.8); /* Stronger glow on focus */
 }
 
 /* Exoplanet List */
@@ -92,13 +131,13 @@ header h1 {
     margin: 15px 0;
     border: 2px solid #6200ea;
     transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2), 0 0 20px rgba(136, 84, 208, 0.6); /* Spacey glow on hover */
     text-align: left;
 }
 
 .exoplanet-item:hover {
     transform: scale(1.05);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3), 0 0 30px rgba(136, 84, 208, 0.8); /* Glow increases on hover */
 }
 
 .exoplanet-header {
