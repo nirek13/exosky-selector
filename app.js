@@ -1,5 +1,4 @@
 // Sample exoplanet data
-
 const exoplanetData = [
     { name: "Kepler-22b", star: "Kepler-22", distance: 620, radius: 2.4 },
     { name: "Proxima Centauri b", star: "Proxima Centauri", distance: 4.24, radius: 1.1 },
@@ -25,7 +24,7 @@ const renderExoplanets = (data) => {
         exoplanetItem.className = "exoplanet-item";
         exoplanetItem.innerHTML = `
             <div class="exoplanet-header">
-                <div class="exoplanet-name">${exoplanet.name}</div>
+                <div class="exoplanet-name">${exoplanet.name}</div>    
             </div>
             <div class="exoplanet-details">
                 <p><strong>Star:</strong> ${exoplanet.star}</p>
@@ -33,6 +32,7 @@ const renderExoplanets = (data) => {
                 <p><strong>Radius:</strong> ${exoplanet.radius} Earth radii</p>
             </div>
         `;
+        exoplanetItem.addEventListener('click', () => updatePlanetSprite(exoplanet));
         exoplanetList.appendChild(exoplanetItem);
     });
 };
@@ -43,48 +43,27 @@ const filterExoplanets = (searchTerm) => {
         exoplanet.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
 };
-// Function to draw a procedurally generated planet
 
-// Function to create a procedurally generated planet
-const createPlanet = () => {
-    // Create a scene
-    const scene = new THREE.Scene();
-
-    // Create a camera
-    const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
-    camera.position.z = 2; // Position the camera
-
-    // Create a renderer
-    const renderer = new THREE.WebGLRenderer({ alpha: true }); // Alpha to allow transparency
-    renderer.setSize(200, 200); // Set size
-    document.getElementById('planet-container').appendChild(renderer.domElement); // Attach to DOM
-
-    // Create the planet geometry
-    const geometry = new THREE.SphereGeometry(0.5, 32, 32); // Sphere with radius 0.5
-    const material = new THREE.MeshStandardMaterial({ color: 0xffffff }); // Base material
-    const planet = new THREE.Mesh(geometry, material);
-    scene.add(planet); // Add planet to the scene
-
-    // Add a light source
-    const light = new THREE.PointLight(0xffffff, 1, 100);
-    light.position.set(0, 0, 5);
-    scene.add(light); // Add light to the scene
-
-    // Create a function to animate the planet
-    const animate = () => {
-        requestAnimationFrame(animate);
-        planet.rotation.y += 0.01; // Rotate the planet
-        renderer.render(scene, camera); // Render the scene
-    };
-
-    // Start the animation
-    animate();
-};
-
-// Call the function to create the planet
-createPlanet();
-
-
+/*
+Image Credit
+<a href="https://www.flaticon.com/free-icons/planet" title="planet icons">Planet icons created by Freepik - Flaticon</a>
+*/
+const updatePlanetSprite = (planet_data) => {
+    const planet = document.getElementById("planet-container");
+    const images = ["images/planet.png", "images/mercury.png", "images/venus.png"];
+    const details = {};
+    planet.innerHTML = `
+    <img src="${planet_data.texture ? planet_data.texture : images[Math.floor(Math.random() * 3)]}" alt="${planet_data.name}" class="exoplanet-image">
+    <br/>
+    <div class="exoplanet-more-details">
+        <div class="exoplanet-name">${planet_data.name ? planet_data.name : "Select a Planet"}</div>
+        <p><strong>Star:</strong> ${planet_data.star ? planet_data.star : "N/A"}</p>
+        <p><strong>Distance:</strong> ${planet_data.distance ? planet_data.distance : "N/A"} light-years</p>
+        <p><strong>Radius:</strong> ${planet_data.radius ? planet_data.radius : "N/A"} Earth radii</p>
+    </div>
+    `;
+}
+updatePlanetSprite({});
 // Event listener for search input
 document.getElementById("search-input").addEventListener("input", (event) => {
     const searchTerm = event.target.value;

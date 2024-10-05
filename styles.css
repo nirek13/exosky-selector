@@ -39,15 +39,18 @@ body::before {
     overflow-y: auto; /* Allow vertical scrolling */
     height: 100vh; /* Fill the viewport height */
 }
+.container::-webkit-scrollbar {
+    display: none;
+}
 
 /* Position planet in the right middle */
 .planet-container {
     position: absolute;
-    top: 50%; /* Center vertically */
-    right: 20px; /* Adjust as needed */
+    top: 65%; /* Center vertically */
+    left: 600px; /* Adjust as needed */
     transform: translateY(-50%); /* Adjust to center the planet vertically */
-    width: 300px; /* Set larger size */
-    height: 300px; /* Set larger size */
+    width: 65%; /* Set larger size */
+    height: 90%; /* Set larger size */
     overflow: hidden; /* Prevent overflow */
 }
 
@@ -161,3 +164,20 @@ header h1::after {
 .exoplanet-details p {
     margin: 5px 0;
 }
+
+.exoplanet-image {
+    display: block;
+    margin: auto; 
+
+}
+
+.exoplanet-more-details {
+    font-size: 1.1rem;
+    text-align: center;
+    overflow-y: auto;
+}
+
+.exoplanet-more-details::-webkit-scrollbar {
+    display: none;
+}
+
