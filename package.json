@@ -1,0 +1,36 @@
+{
+  "name": "selectorexosky",
+  "version": "1.0.0",
+  "description": "A web application to explore exoplanets using interactive visualizations.",
+  "main": "index.js",
+  "scripts": {
+    "start": "live-server",
+    "build": "webpack",
+    "test": "jest"
+  },
+  "keywords": [
+    "exoplanets",
+    "space",
+    "NASA",
+    "astronomy"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "dependencies": {
+    "three": "^0.140.0",
+    "axios": "^0.21.1"
+  },
+  "devDependencies": {
+    "live-server": "^1.2.1",
+    "webpack": "^5.0.0",
+    "jest": "^27.0.0"
+  },
+  "homepage": "https://yourusername.github.io/selectorexosky",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/selectorexosky.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yourusername/selectorexosky/issues"
+  }
+}

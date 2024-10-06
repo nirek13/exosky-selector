@@ -15,7 +15,7 @@
     <header>
         <h1>Exoplanet Selector</h1>
     </header>
-
+    <canvas id="star-canvas"> </canvas>
     <!-- Search Input -->
     <div class="search-bar">
         <input type="text" id="search-input" placeholder="Search exoplanet...">
@@ -33,5 +33,62 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="app.js"></script>
+<script>// Variables for star field
+const canvas = document.getElementById('star-canvas');
+const ctx = canvas.getContext('2d');
+let stars = [];
+
+// Set canvas size
+const setCanvasSize = () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+};
+
+// Generate stars
+const generateStars = (numStars) => {
+    for (let i = 0; i < numStars; i++) {
+        stars.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            radius: Math.random() * 2 + 1,
+            speed: Math.random() * 0.5 + 0.5 // Speed of drifting
+        });
+    }
+};
+
+// Update star positions
+const updateStars = () => {
+    ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear canvas
+    stars.forEach(star => {
+        star.x -= star.speed; // Move star to the left
+        if (star.x < 0) {
+            star.x = canvas.width; // Reset star to the right side
+        }
+        ctx.beginPath();
+        ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+        ctx.fillStyle = 'white';
+        ctx.fill();
+    });
+};
+
+// Animation loop
+const animateStars = () => {
+    updateStars();
+    requestAnimationFrame(animateStars);
+};
+
+// Initialize star field
+const initStarField = () => {
+    setCanvasSize();
+    generateStars(100); // Number of stars
+    animateStars();
+};
+
+// Resize canvas on window resize
+window.addEventListener('resize', setCanvasSize);
+
+// Call the function to initialize star field after DOM is loaded
+document.addEventListener('DOMContentLoaded', initStarField);
+</script>
 </body>
 </html>

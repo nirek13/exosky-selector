@@ -1,18 +1,88 @@
-// Sample exoplanet data
-const exoplanetData = [
-    { name: "Kepler-22b", star: "Kepler-22", distance: 620, radius: 2.4 },
-    { name: "Proxima Centauri b", star: "Proxima Centauri", distance: 4.24, radius: 1.1 },
-    { name: "Gliese 667 Cc", star: "Gliese 667 C", distance: 23.6, radius: 1.5 },
-    { name: "TRAPPIST-1e", star: "TRAPPIST-1", distance: 39.46, radius: 0.91 },
-    { name: "HD 209458 b", star: "HD 209458", distance: 157, radius: 1.38 },
-    { name: "55 Cancri e", star: "55 Cancri", distance: 41, radius: 1.63 },
-    { name: "LHS 1140 b", star: "LHS 1140", distance: 40.5, radius: 1.43 },
-    { name: "K2-18 b", star: "K2-18", distance: 124, radius: 2.6 },
-    { name: "GJ 1214 b", star: "GJ 1214", distance: 42.5, radius: 2.85 },
-    { name: "WASP-12b", star: "WASP-12", distance: 870, radius: 1.79 },
-    { name: "CoRoT-7b", star: "CoRoT-7", distance: 489, radius: 1.58 },
-    { name: "HD 189733 b", star: "HD 189733", distance: 63, radius: 1.14 }
+
+// Dummy data for exoplanets (to be used if the API call fails)
+const dummyExoplanetData = [
+    {
+        name: "Proxima Centauri b",
+        star: "Proxima Centauri",
+        distance: 4.2, // in light-years
+        radius: 1.3 // in Earth radii
+    },
+    {
+        name: "TRAPPIST-1e",
+        star: "TRAPPIST-1",
+        distance: 39.5,
+        radius: 1.0
+    },
+    {
+        name: "Kepler-186f",
+        star: "Kepler-186",
+        distance: 500,
+        radius: 1.1
+    },
+    {
+        name: "HD 209458 b",
+        star: "HD 209458",
+        distance: 150,
+        radius: 1.4
+    },
+    {
+        name: "LHS 1140 b",
+        star: "LHS 1140",
+        distance: 40,
+        radius: 1.3
+    },
+    {
+        name: "WASP-12b",
+        star: "WASP-12",
+        distance: 870,
+        radius: 1.8
+    },
+    {
+        name: "Gliese 667 Cc",
+        star: "Gliese 667",
+        distance: 23.62,
+        radius: 1.5
+    },
+    {
+        name: "K2-18b",
+        star: "K2-18",
+        distance: 124,
+        radius: 2.0
+    },
+    {
+        name: "WASP-39b",
+        star: "WASP-39",
+        distance: 300,
+        radius: 1.4
+    },
+    {
+        name: "Kepler-22b",
+        star: "Kepler-22",
+        distance: 600,
+        radius: 2.4
+    }
+
+
 ];
+// Function to fetch exoplanet data from the API
+const fetchExoplanetData = async () => {
+    try {
+        const response = await fetch('https://exosky-aacf98ce56cd.herokuapp.com/selector?max=100', {mode: "no-cors"});
+        console.log(response);
+
+        // If the response is not ok, throw an error
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+
+        const exoplanetData = await response.json();  // Assuming the response is in JSON format
+        renderExoplanets(exoplanetData);
+    } catch (error) {
+        console.error('Error fetching exoplanet data:', error);
+        console.log('Using dummy data instead.');
+        renderExoplanets(dummyExoplanetData); // Use dummy data on error
+    }
+};
 
 // Function to render the list of exoplanets
 const renderExoplanets = (data) => {
@@ -37,52 +107,44 @@ const renderExoplanets = (data) => {
     });
 };
 
-// Function to filter exoplanets based on search input
-const filterExoplanets = (searchTerm) => {
-    return exoplanetData.filter(exoplanet =>
-        exoplanet.name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-};
-
-/*
-Image Credit
-<a href="https://www.flaticon.com/free-icons/planet" title="planet icons">Planet icons created by Freepik - Flaticon</a>
-*/
+// Function to update planet sprite
 const updatePlanetSprite = (planet_data) => {
     const planet = document.getElementById("planet-container");
     const images = ["images/planet.png", "images/mercury.png", "images/venus.png"];
 
     planet.innerHTML = `
         <div class="exoplanet-name">${planet_data.name ? planet_data.name : "Select a Planet"}</div>
-        <button class="enter-experience-btn" >Enter Experience</button>
+        <button class="enter-experience-btn">Enter Experience</button>
         <img src="${planet_data.texture ? planet_data.texture : images[Math.floor(Math.random() * 3)]}" alt="${planet_data.name}" class="exoplanet-image">
         <br/>
         <div class="exoplanet-more-details">
-            
-            
             <p><strong>Star:</strong> ${planet_data.star ? planet_data.star : "N/A"}</p>
             <p><strong>Distance:</strong> ${planet_data.distance ? planet_data.distance : "N/A"} light-years</p>
             <p><strong>Radius:</strong> ${planet_data.radius ? planet_data.radius : "N/A"} Earth radii</p>
         </div>
-        
     `;
 
-    // Add event listener to the button if any action is needed
     const button = planet.querySelector('.enter-experience-btn');
     button.addEventListener('click', () => {
-        // Perform the action to enter the experience
         console.log('Entering experience for planet:', planet_data.name);
-        // You can trigger any experience-related functions here.
-        window.location.href = ''
+        window.location.href = '';  // Add experience action here
     });
 };
-updatePlanetSprite({});
-// Event listener for search input
+
+// Function to filter exoplanets based on search input
+const filterExoplanets = (searchTerm) => {
+    const filteredData = dummyExoplanetData.filter(exoplanet => {
+        return exoplanet.name.toLowerCase().includes(searchTerm.toLowerCase());
+    });
+    return filteredData;
+};
+
+// Fetch and render data on page load
+fetchExoplanetData();
+
+// Event listener for search input (optional, to filter planets)
 document.getElementById("search-input").addEventListener("input", (event) => {
     const searchTerm = event.target.value;
     const filteredExoplanets = filterExoplanets(searchTerm);
     renderExoplanets(filteredExoplanets);
 });
-
-// Initial render
-renderExoplanets(exoplanetData);
