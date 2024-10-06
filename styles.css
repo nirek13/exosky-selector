@@ -15,6 +15,8 @@ body {
     justify-content: flex-start; /* Align items to the left */
     align-items: flex-start; /* Align items to the top */
     min-height: 100vh; /* Minimum height for full viewport */
+    overflow: scroll;
+
 }
 
 /* Add small moving stars in the background */
@@ -181,3 +183,16 @@ header h1::after {
     display: none;
 }
 
+.enter-experience-btn {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 15px;
+}
+
+.enter-experience-btn:hover {
+    background-color: #0056b3;
+}

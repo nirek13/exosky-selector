@@ -51,18 +51,28 @@ Image Credit
 const updatePlanetSprite = (planet_data) => {
     const planet = document.getElementById("planet-container");
     const images = ["images/planet.png", "images/mercury.png", "images/venus.png"];
-    const details = {};
+
     planet.innerHTML = `
-    <img src="${planet_data.texture ? planet_data.texture : images[Math.floor(Math.random() * 3)]}" alt="${planet_data.name}" class="exoplanet-image">
-    <br/>
-    <div class="exoplanet-more-details">
-        <div class="exoplanet-name">${planet_data.name ? planet_data.name : "Select a Planet"}</div>
-        <p><strong>Star:</strong> ${planet_data.star ? planet_data.star : "N/A"}</p>
-        <p><strong>Distance:</strong> ${planet_data.distance ? planet_data.distance : "N/A"} light-years</p>
-        <p><strong>Radius:</strong> ${planet_data.radius ? planet_data.radius : "N/A"} Earth radii</p>
-    </div>
+        <img src="${planet_data.texture ? planet_data.texture : images[Math.floor(Math.random() * 3)]}" alt="${planet_data.name}" class="exoplanet-image">
+        <br/>
+        <div class="exoplanet-more-details">
+            	<button class="enter-experience-btn">Enter Experience</button>
+            <div class="exoplanet-name">${planet_data.name ? planet_data.name : "Select a Planet"}</div>
+            <p><strong>Star:</strong> ${planet_data.star ? planet_data.star : "N/A"}</p>
+            <p><strong>Distance:</strong> ${planet_data.distance ? planet_data.distance : "N/A"} light-years</p>
+            <p><strong>Radius:</strong> ${planet_data.radius ? planet_data.radius : "N/A"} Earth radii</p>
+        </div>
+        
     `;
-}
+
+    // Add event listener to the button if any action is needed
+    const button = planet.querySelector('.enter-experience-btn');
+    button.addEventListener('click', () => {
+        // Perform the action to enter the experience
+        console.log('Entering experience for planet:', planet_data.name);
+        // You can trigger any experience-related functions here.
+    });
+};
 updatePlanetSprite({});
 // Event listener for search input
 document.getElementById("search-input").addEventListener("input", (event) => {
