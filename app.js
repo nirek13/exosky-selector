@@ -53,11 +53,13 @@ const updatePlanetSprite = (planet_data) => {
     const images = ["images/planet.png", "images/mercury.png", "images/venus.png"];
 
     planet.innerHTML = `
+        <div class="exoplanet-name">${planet_data.name ? planet_data.name : "Select a Planet"}</div>
+        <button class="enter-experience-btn">Enter Experience</button>
         <img src="${planet_data.texture ? planet_data.texture : images[Math.floor(Math.random() * 3)]}" alt="${planet_data.name}" class="exoplanet-image">
         <br/>
         <div class="exoplanet-more-details">
-            	<button class="enter-experience-btn">Enter Experience</button>
-            <div class="exoplanet-name">${planet_data.name ? planet_data.name : "Select a Planet"}</div>
+            
+            
             <p><strong>Star:</strong> ${planet_data.star ? planet_data.star : "N/A"}</p>
             <p><strong>Distance:</strong> ${planet_data.distance ? planet_data.distance : "N/A"} light-years</p>
             <p><strong>Radius:</strong> ${planet_data.radius ? planet_data.radius : "N/A"} Earth radii</p>

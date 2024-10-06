@@ -14,7 +14,7 @@ body {
     display: flex;
     justify-content: flex-start; /* Align items to the left */
     align-items: flex-start; /* Align items to the top */
-    min-height: 100vh; /* Minimum height for full viewport */
+    min-height: 100vh; /* Full viewport height */
     overflow: scroll;
 
 }
@@ -54,6 +54,7 @@ body::before {
     width: 65%; /* Set larger size */
     height: 90%; /* Set larger size */
     overflow: hidden; /* Prevent overflow */
+    text-align: center;
 }
 
 /* Remaining CSS unchanged */
@@ -190,9 +191,15 @@ header h1::after {
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    margin-top: 15px;
+    margin-bottom: 1%;
 }
 
 .enter-experience-btn:hover {
     background-color: #0056b3;
+
+}
+planet-container {
+    position: absolute;
+
+    text-align: center;
 }
