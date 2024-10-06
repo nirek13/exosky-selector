@@ -54,7 +54,7 @@ const updatePlanetSprite = (planet_data) => {
 
     planet.innerHTML = `
         <div class="exoplanet-name">${planet_data.name ? planet_data.name : "Select a Planet"}</div>
-        <button class="enter-experience-btn">Enter Experience</button>
+        <button class="enter-experience-btn" >Enter Experience</button>
         <img src="${planet_data.texture ? planet_data.texture : images[Math.floor(Math.random() * 3)]}" alt="${planet_data.name}" class="exoplanet-image">
         <br/>
         <div class="exoplanet-more-details">
@@ -73,6 +73,7 @@ const updatePlanetSprite = (planet_data) => {
         // Perform the action to enter the experience
         console.log('Entering experience for planet:', planet_data.name);
         // You can trigger any experience-related functions here.
+        window.location.href = ''
     });
 };
 updatePlanetSprite({});
