@@ -95,7 +95,7 @@ const updatePlanetSprite = (planetName , planetKey) => {
     const button = planet.querySelector('.enter-experience-btn');
     button.addEventListener('click', () => {
         console.log('Entering experience for planet:', planetName);
-        window.location.href = `http://app.voyager-o.ca?key=${planetKey}`;  // Corrected template literal usage
+        window.location.href = `https://frontend-exosky-final-spaceapps.vercel.app/?key=${planetKey}`;  // Corrected template literal usage
     });
 };
 
