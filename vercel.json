@@ -1,0 +1,9 @@
+{
+  "version": 2,
+  "rewrites": [
+    {
+      "source": "/api/selector",
+      "destination": "http://exosky-backend.eastus.cloudapp.azure.com:5000/selector"
+    }
+  ]
+}

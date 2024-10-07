@@ -14,7 +14,7 @@ const dummyExoplanetData = [
 
 // Function to fetch exoplanet data from the API
 function fetchExoplanetData() {
-    fetch('https://exosky-backend.eastus.cloudapp.azure.com:5000/selector?max=100', {
+    fetch('/api/selector?max=100', {
         method: 'GET',
         mode: 'cors',  // This allows handling of the response if the server supports it
         headers: {
