@@ -73,7 +73,7 @@ const renderExoplanets = (data) => {
                   
                 </div>
             `;
-            exoplanetItem.addEventListener('click', () => updatePlanetSprite(planetName));
+            exoplanetItem.addEventListener('click', () => updatePlanetSprite(planetName , planetKey));
             // Append the list item to the list
             exoplanetList.appendChild(exoplanetItem);
         }
@@ -81,7 +81,7 @@ const renderExoplanets = (data) => {
 };
 
 // Function to update planet sprite
-const updatePlanetSprite = (planetName) => {
+const updatePlanetSprite = (planetName , planetKey) => {
     const planet = document.getElementById("planet-container");
     const images = ["images/planet.png", "images/mercury.png", "images/venus.png"];
 
@@ -95,7 +95,7 @@ const updatePlanetSprite = (planetName) => {
     const button = planet.querySelector('.enter-experience-btn');
     button.addEventListener('click', () => {
         console.log('Entering experience for planet:', planetName);
-        window.location.href = `http://app.voyager-o.ca/${planetName}`;  // Corrected template literal usage
+        window.location.href = `http://app.voyager-o.ca/${planetKey}`;  // Corrected template literal usage
     });
 };
 
