@@ -14,7 +14,7 @@ const dummyExoplanetData = [
 
 // Function to fetch exoplanet data from the API
 function fetchExoplanetData() {
-    fetch('http://exosky-backend.eastus.cloudapp.azure.com:5000/selector?max=100', {
+    fetch('https://exosky-backend.eastus.cloudapp.azure.com:5000/selector?max=100', {
         method: 'GET',
         mode: 'cors',  // This allows handling of the response if the server supports it
         headers: {
@@ -95,7 +95,7 @@ const updatePlanetSprite = (planetName) => {
     const button = planet.querySelector('.enter-experience-btn');
     button.addEventListener('click', () => {
         console.log('Entering experience for planet:', planetName);
-        window.location.href = `/${planetName}`;  // Corrected template literal usage
+        window.location.href = `app.voyager-o.ca//${planetName}`;  // Corrected template literal usage
     });
 };
 
