@@ -95,7 +95,7 @@ const updatePlanetSprite = (planetName) => {
     const button = planet.querySelector('.enter-experience-btn');
     button.addEventListener('click', () => {
         console.log('Entering experience for planet:', planetName);
-        window.location.href = `app.voyager-o.ca//${planetName}`;  // Corrected template literal usage
+        window.location.href = `http://app.voyager-o.ca/${planetName}`;  // Corrected template literal usage
     });
 };
 
