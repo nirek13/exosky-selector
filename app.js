@@ -14,7 +14,7 @@ const dummyExoplanetData = [
 
 // Function to fetch exoplanet data from the API
 function fetchExoplanetData() {
-    fetch('http://exosky-backend.eastus.cloudapp.azure.com:5000/selector?max=10', {
+    fetch('http://exosky-backend.eastus.cloudapp.azure.com:5000/selector?max=100', {
         method: 'GET',
         mode: 'cors',  // This allows handling of the response if the server supports it
         headers: {
@@ -46,48 +46,56 @@ const renderExoplanets = (data) => {
     exoplanetList.innerHTML = ""; // Clear previous list items
 
     // Iterate over the dictionary's keys
-    for (const key in data) {
-        if (data.hasOwnProperty(key)) { // Ensure it is a property of the object
-            const exoplanet = data[key]; // Access the exoplanet object
+    for (const planetKey in data) {
+        if (data.hasOwnProperty(planetKey)) { // Ensure it is a property of the object
+            const exoplanet = data[planetKey];
+            const planetName = exoplanet["pl_name"];
+            const planetMass = exoplanet["pl_bmasse"];
+            const systemDistance = exoplanet["sy_dist"];
+            const incl = exoplanet["pl_orbincl"];
+
+            console.log(exoplanet["pl_name"]);
+            // Prepare the values, defaulting to "N/A" if not present
+            const hostStar = exoplanet.hostStar || "N/A";
+            const lightYears = exoplanet.lightYears !== undefined ? exoplanet.lightYears : "N/A";
+            const earthRadius = exoplanet.earthRadius !== undefined ? exoplanet.earthRadius : "N/A";
+
+            // Create the list item with the specified format
             const exoplanetItem = document.createElement("li");
             exoplanetItem.className = "exoplanet-item";
             exoplanetItem.innerHTML = `
                 <div class="exoplanet-header">
-                    <div class="exoplanet-name">${exoplanet.name || "Unknown"} (Key: ${key})</div>
+                    <div class="exoplanet-name">${planetName || "Unknown"}</div>
                 </div>
                 <div class="exoplanet-details">
-                    <p><strong>Star:</strong> ${exoplanet.hostStar || "N/A"}</p>
-                    <p><strong>Distance:</strong> ${exoplanet.lightYears || "N/A"} light-years</p>
-                    <p><strong>Radius:</strong> ${exoplanet.earthRadius || "N/A"} Earth radii</p>
+                    
+                    <p>Distance: ${systemDistance} light-years</p>
+                  
                 </div>
             `;
-            exoplanetItem.addEventListener('click', () => updatePlanetSprite(key, exoplanet));
+            exoplanetItem.addEventListener('click', () => updatePlanetSprite(planetName));
+            // Append the list item to the list
             exoplanetList.appendChild(exoplanetItem);
         }
     }
 };
 
 // Function to update planet sprite
-const updatePlanetSprite = (planet_data) => {
+const updatePlanetSprite = (planetName) => {
     const planet = document.getElementById("planet-container");
     const images = ["images/planet.png", "images/mercury.png", "images/venus.png"];
 
     planet.innerHTML = `
-        <div class="exoplanet-name">${planet_data.name || "Select a Planet"}</div>
+        <div class="exoplanet-name">${planetName|| "Select a Planet"}</div>
         <button class="enter-experience-btn">Enter Experience</button>
-        <img src="${planet_data.texture || images[Math.floor(Math.random() * images.length)]}" alt="${planet_data.name}" class="exoplanet-image">
+        <img src="${images[Math.floor(Math.random() * images.length)]}" alt="${planetName}" class="exoplanet-image">
         <br/>
-        <div class="exoplanet-more-details">
-            <p><strong>Star:</strong> ${planet_data.star || "N/A"}</p>
-            <p><strong>Distance:</strong> ${planet_data.distance || "N/A"} light-years</p>
-            <p><strong>Radius:</strong> ${planet_data.radius || "N/A"} Earth radii</p>
-        </div>
     `;
 
     const button = planet.querySelector('.enter-experience-btn');
     button.addEventListener('click', () => {
-        console.log('Entering experience for planet:', planet_data.name);
-        window.location.href = `/${planet_data.name}`;  // Corrected template literal usage
+        console.log('Entering experience for planet:', planetName);
+        window.location.href = `/${planetName}`;  // Corrected template literal usage
     });
 };
 
