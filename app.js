@@ -41,6 +41,7 @@ function fetchExoplanetData() {
 
 
 // Function to render the list of exoplanets
+// Function to render the list of exoplanets
 const renderExoplanets = (data) => {
     const exoplanetList = document.getElementById("exoplanet-list");
     exoplanetList.innerHTML = ""; // Clear previous list items
@@ -49,12 +50,12 @@ const renderExoplanets = (data) => {
     const sortedData = Object.values(data).sort((a, b) => a.sy_dist - b.sy_dist);
 
     // Iterate over the sorted list of exoplanets
-    sortedData.forEach(exoplanet => {
+    sortedData.forEach((exoplanet, index) => {  // Add index to track each planet's key
         const planetName = exoplanet["pl_name"];
         const systemDistance = exoplanet["sy_dist"];
+        const planetKey = index;  // Use index as a simple key, or you can use another unique field from the data
 
         // Prepare the values, defaulting to "N/A" if not present
-        const hostStar = exoplanet.hostStar || "N/A";
         const lightYears = systemDistance !== undefined ? systemDistance : "N/A";
 
         // Create the list item with the specified format
@@ -68,19 +69,22 @@ const renderExoplanets = (data) => {
                 <p>Distance: ${lightYears} light-years</p>
             </div>
         `;
+
+        // Pass planetKey to the updatePlanetSprite function
         exoplanetItem.addEventListener('click', () => updatePlanetSprite(planetName, planetKey));
 
         // Append the list item to the list
         exoplanetList.appendChild(exoplanetItem);
     });
 };
+
 // Function to update planet sprite
 const updatePlanetSprite = (planetName , planetKey) => {
     const planet = document.getElementById("planet-container");
     const images = ["images/planet.png", "images/mercury.png", "images/venus.png"];
 
     planet.innerHTML = `
-        <div class="exoplanet-name">${planetName|| "Select a Planet"}</div>
+        <div class="exoplanet-name">${planetName || "Select a Planet"}</div>
         <button class="enter-experience-btn">Enter Experience</button>
         <img src="${images[Math.floor(Math.random() * images.length)]}" alt="${planetName}" class="exoplanet-image">
         <br/>
