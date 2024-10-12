@@ -53,7 +53,7 @@ const renderExoplanets = (data) => {
     sortedData.forEach((exoplanet, index) => {  // Add index to track each planet's key
         const planetName = exoplanet["pl_name"];
         const systemDistance = exoplanet["sy_dist"];
-        const planetKey = index;  // Use index as a simple key, or you can use another unique field from the data
+        const planetKey = exoplanet;  // Use index as a simple key, or you can use another unique field from the data
 
         // Prepare the values, defaulting to "N/A" if not present
         const lightYears = systemDistance !== undefined ? systemDistance : "N/A";
