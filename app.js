@@ -53,7 +53,7 @@ const renderExoplanets = (data) => {
     sortedData.forEach((exoplanet, index) => {  // Add index to track each planet's key
         const planetName = exoplanet["pl_name"];
         const systemDistance = exoplanet["sy_dist"];
-        const planetKey = exoplanet;  // Use index as a simple key, or you can use another unique field from the data
+        const planetKey = index;  // Use index as a simple key, or you can use another unique field from the data
 
         // Prepare the values, defaulting to "N/A" if not present
         const lightYears = systemDistance !== undefined ? systemDistance : "N/A";
@@ -93,7 +93,13 @@ const updatePlanetSprite = (planetName , planetKey) => {
     const button = planet.querySelector('.enter-experience-btn');
     button.addEventListener('click', () => {
         console.log('Entering experience for planet:', planetName);
-        window.location.href = `https://frontend-exosky-final-spaceapps.vercel.app/?key=${planetKey}`;  // Corrected template literal usage
+        if (planetKey === '36') {
+  // If the key is 36, redirect to 37
+  window.location.href = `https://frontend-exosky-final-spaceapps.vercel.app/?key=37`;
+} else {
+  // Otherwise, continue with the original redirect
+  window.location.href = `https://frontend-exosky-final-spaceapps.vercel.app/?key=${planetKey}`;
+}  // Corrected template literal usage
     });
 };
 
