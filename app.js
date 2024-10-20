@@ -39,6 +39,33 @@ function fetchExoplanetData() {
         });
 }
 
+// Function to fetch exoplanet data from the API
+function fetchExoplanetData2() {
+    fetch('/api/selector?max=100', {
+        method: 'GET',
+        mode: 'cors',  // This allows handling of the response if the server supports it
+        headers: {
+            'Accept': 'application/json',
+            'Access-Control-Allow-Origin': '*'
+        }
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Server error: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log("WORKS");
+            console.log('Generated text:', data);
+            return data
+
+        })
+        .catch(error => {
+            console.error('Error generating text:', error);
+        });
+}
+
 
 // Function to render the list of exoplanets
 // Function to render the list of exoplanets
@@ -105,7 +132,7 @@ const updatePlanetSprite = (planetName , planetKey) => {
 
 // Function to filter exoplanets based on search input
 const filterExoplanets = (searchTerm) => {
-    const filteredData = dummyExoplanetData.filter(exoplanet => {
+    const filteredData = fetchExoplanetData2.filter(exoplanet => {
         return exoplanet.name.toLowerCase().includes(searchTerm.toLowerCase());
     });
     return filteredData;
