@@ -132,7 +132,7 @@ const updatePlanetSprite = (planetName , planetKey) => {
 
 // Function to filter exoplanets based on search input
 const filterExoplanets = (searchTerm) => {
-    const filteredData = fetchExoplanetData2.filter(exoplanet => {
+    const filteredData = fetchExoplanetData2().filter(exoplanet => {
         return exoplanet.name.toLowerCase().includes(searchTerm.toLowerCase());
     });
     return filteredData;
