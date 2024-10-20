@@ -98,7 +98,7 @@ const updatePlanetSprite = (planetName , planetKey) => {
   window.location.href = `https://frontend-exosky-final-spaceapps.vercel.app/?key=37`;
 } else {
   // Otherwise, continue with the original redirect
-  window.location.href = `https://frontend-exosky-final-spaceapps.vercel.app/?key=${planetKey * 10}`;
+  window.location.href = `https://frontend-exosky-final-spaceapps.vercel.app/?key=${planetKey * 11}`;
 }  // Corrected template literal usage
     });
 };
