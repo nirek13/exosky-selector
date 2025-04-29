@@ -4,91 +4,695 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Exoplanet Selector</title>
-    <link rel="stylesheet" href="styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Protest+Guerrilla&display=swap" rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #8a4fff;
+            --secondary-color: #6e45ff;
+            --text-color: #e6dfff;
+            --bg-color: #0c0024;
+            --card-bg: rgba(35, 25, 65, 0.7);
+            --card-hover: rgba(50, 35, 90, 0.8);
+            --accent-color: #c77dff;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        h1 {
+            font-size: 2.8rem;
+            font-weight: 700;
+            background: linear-gradient(to right, var(--primary-color), var(--accent-color));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 0.5rem;
+            letter-spacing: 1px;
+        }
+        
+        .subtitle {
+            font-size: 1rem;
+            opacity: 0.8;
+            margin-bottom: 1.5rem;
+        }
+        
+        #star-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+        
+        .search-bar {
+            position: relative;
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        #search-input {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            font-size: 1rem;
+            border-radius: 50px;
+            border: none;
+            background: rgba(25, 25, 50, 0.7);
+            color: var(--text-color);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3), 
+                        inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        #search-input:focus {
+            outline: none;
+            box-shadow: 0 4px 20px rgba(138, 79, 255, 0.4),
+                        inset 0 0 0 1px rgba(138, 79, 255, 0.4);
+        }
+        
+        #search-input::placeholder {
+            color: rgba(224, 224, 255, 0.5);
+        }
+        
+        .search-icon {
+            position: absolute;
+            right: 1.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--primary-color);
+            pointer-events: none;
+        }
+        
+        .enter-experience-btn {
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1.5rem;
+            box-shadow: 0 4px 15px rgba(138, 79, 255, 0.5);
+            font-family: 'Space Grotesk', sans-serif;
+        }
+        
+        .enter-experience-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(138, 79, 255, 0.7);
+        }
+        
+        .enter-experience-btn:active {
+            transform: translateY(1px);
+        }
+        
+        .exoplanet-list {
+            list-style: none;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .exoplanet-item {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .exoplanet-item::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-color), var(--primary-color));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .exoplanet-item:hover {
+            background: var(--card-hover);
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(138, 79, 255, 0.3);
+        }
+        
+        .exoplanet-item:hover::after {
+            opacity: 1;
+        }
+        
+        .exoplanet-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #fff;
+        }
+        
+        .exoplanet-details {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            margin-bottom: 1rem;
+        }
+        
+        .planet-tag {
+            align-self: flex-start;
+            background: rgba(138, 79, 255, 0.2);
+            color: var(--accent-color);
+            padding: 0.3rem 0.8rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            margin-top: auto;
+            border: 1px solid rgba(138, 79, 255, 0.3);
+        }
+        
+        .planet-container {
+            height: 400px;
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.3);
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(138, 79, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .planet-view {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        .planet-image-container {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            margin: 1rem 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .exoplanet-image {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            filter: drop-shadow(0 0 10px rgba(138, 79, 255, 0.5));
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(0px) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-10px) rotate(5deg);
+            }
+            100% {
+                transform: translateY(0px) rotate(0deg);
+            }
+        }
+        
+        .planet-title {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: white;
+            text-shadow: 0 0 10px rgba(138, 79, 255, 0.7);
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: rgba(230, 223, 255, 0.6);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+        }
+        
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(138, 79, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--primary-color);
+            animation: spin 1s linear infinite;
+            margin-bottom: 1rem;
+        }
+        
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        
+        .empty-state svg {
+            width: 60px;
+            height: 60px;
+            margin-bottom: 1rem;
+            opacity: 0.6;
+        }
+        
+        .empty-state h3 {
+            font-size: 1.4rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .empty-state p {
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .exoplanet-list {
+                grid-template-columns: 1fr;
+            }
+            
+            .planet-container {
+                height: 300px;
+            }
+        }
+    </style>
 </head>
 <body>
-<div class="container">
-    <header>
-        <h1>Exoplanet Selector</h1>
-    </header>
-    <canvas id="star-canvas"> </canvas>
-    <!-- Search Input -->
-    <div class="search-bar">
-        <input type="text" id="search-input" placeholder="Search exoplanet...">
+    <canvas id="star-canvas"></canvas>
+    
+    <div class="container">
+        <header>
+            <h1>Exoplanet Selector</h1>
+            <p class="subtitle">Explore distant worlds beyond our solar system</p>
+        </header>
+        
+        <!-- Search Input -->
+        <div class="search-bar">
+            <input type="text" id="search-input" placeholder="Search exoplanet...">
+            <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+        </div>
+        
+        <div id="planet-container" class="planet-container">
+            <div class="empty-state">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <circle cx="12" cy="12" r="4"></circle>
+                    <line x1="21.17" y1="8" x2="12" y2="8"></line>
+                    <line x1="3.95" y1="6.06" x2="8.54" y2="14"></line>
+                    <line x1="10.88" y1="21.94" x2="15.46" y2="14"></line>
+                </svg>
+                <h3>Select an exoplanet</h3>
+                <p>Click on any planet from the list to view it in 3D</p>
+            </div>
+        </div>
+        <br>
+        <!-- Exoplanet List -->
+        <ul id="exoplanet-list" class="exoplanet-list">
+            <!-- Sample items for preview -->
+            <li class="exoplanet-item">
+                <div class="exoplanet-name">Kepler-186f</div>
+                <div class="exoplanet-details">Distance: 500 ly • Earth-like • Habitable Zone</div>
+                <span class="planet-tag">Rocky</span>
+            </li>
+            <li class="exoplanet-item">
+                <div class="exoplanet-name">HD 209458 b</div>
+                <div class="exoplanet-details">Distance: 159 ly • Hot Jupiter • Tidally Locked</div>
+                <span class="planet-tag">Gas Giant</span>
+            </li>
+            <li class="exoplanet-item">
+                <div class="exoplanet-name">TRAPPIST-1e</div>
+                <div class="exoplanet-details">Distance: 40 ly • Earth-sized • Habitable Zone</div>
+                <span class="planet-tag">Terrestrial</span>
+            </li>
+        </ul>
+        
+        <!-- Div for Three.js scene -->
+       
     </div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        // Variables for star field
+        const canvas = document.getElementById('star-canvas');
+        const ctx = canvas.getContext('2d');
+        let stars = [];
+        let animationId;
+        
+        // Set canvas size
+        const setCanvasSize = () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            generateStars(200); // Regenerate stars on resize
+        };
+        
+        // Generate stars
+        const generateStars = (numStars) => {
+            stars = []; // Clear existing stars
+            for (let i = 0; i < numStars; i++) {
+                stars.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    radius: Math.random() * 2 + 0.5,
+                    speed: Math.random() * 0.3 + 0.1,
+                    opacity: Math.random() * 0.8 + 0.2,
+                    twinkle: Math.random() * 0.015 + 0.005
+                });
+            }
+        };
+        
+        // Update star positions and appearance
+        const updateStars = () => {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            stars.forEach(star => {
+                // Move stars
+                star.x -= star.speed;
+                if (star.x < 0) {
+                    star.x = canvas.width;
+                }
+                
+                // Twinkle effect
+                star.opacity += Math.sin(Date.now() * star.twinkle) * 0.05;
+                star.opacity = Math.max(0.2, Math.min(1, star.opacity));
+                
+                // Draw star
+                ctx.beginPath();
+                ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(255, 255, 255, ${star.opacity})`;
+                ctx.fill();
+            });
+        };
+        
+        // Animation loop
+        const animateStars = () => {
+            updateStars();
+            animationId = requestAnimationFrame(animateStars);
+        };
+        
+        // Initialize star field
+        const initStarField = () => {
+            setCanvasSize();
+            animateStars();
+        };
+        
+        // Handle window resize
+        window.addEventListener('resize', setCanvasSize);
+        
+        // Initialize once DOM is loaded
+        document.addEventListener('DOMContentLoaded', initStarField);
+        
+        // Dummy data for exoplanets (to be used if the API call fails)
+        const dummyExoplanetData = [
+            { name: "Proxima Centauri b", star: "Proxima Centauri", distance: 4.2, radius: 1.3 },
+            { name: "TRAPPIST-1e", star: "TRAPPIST-1", distance: 39.5, radius: 1.0 },
+            { name: "Kepler-186f", star: "Kepler-186", distance: 500, radius: 1.1 },
+            { name: "HD 209458 b", star: "HD 209458", distance: 150, radius: 1.4 },
+            { name: "LHS 1140 b", star: "LHS 1140", distance: 40, radius: 1.3 },
+            { name: "WASP-12b", star: "WASP-12", distance: 870, radius: 1.8 },
+            { name: "Gliese 667 Cc", star: "Gliese 667", distance: 23.62, radius: 1.5 },
+            { name: "K2-18b", star: "K2-18", distance: 124, radius: 2.0 },
+            { name: "WASP-39b", star: "WASP-39", distance: 300, radius: 1.4 },
+            { name: "Kepler-22b", star: "Kepler-22", distance: 600, radius: 2.4 }
+        ];
 
-    <!-- Exoplanet List -->
-    <ul id="exoplanet-list" class="exoplanet-list">
-        <!-- Exoplanet items will be dynamically inserted here -->
-    </ul>
-    <!-- Div for Three.js scene -->
-    <div id="planet-container" class="planet-container">
-
-    </div>
-</div>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script src="app.js"></script>
-<script>// Variables for star field
-const canvas = document.getElementById('star-canvas');
-const ctx = canvas.getContext('2d');
-let stars = [];
-
-// Set canvas size
-const setCanvasSize = () => {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-};
-
-// Generate stars
-const generateStars = (numStars) => {
-    for (let i = 0; i < numStars; i++) {
-        stars.push({
-            x: Math.random() * canvas.width,
-            y: Math.random() * canvas.height,
-            radius: Math.random() * 2 + 1,
-            speed: Math.random() * 0.5 + 0.5 // Speed of drifting
-        });
-    }
-};
-
-// Update star positions
-const updateStars = () => {
-    ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear canvas
-    stars.forEach(star => {
-        star.x -= star.speed; // Move star to the left
-        if (star.x < 0) {
-            star.x = canvas.width; // Reset star to the right side
+        // Function to fetch exoplanet data from the API
+        function fetchExoplanetData() {
+            fetch('/api/selector?max=100', {
+                method: 'GET',
+                mode: 'cors',
+                headers: {
+                    'Accept': 'application/json',
+                    'Access-Control-Allow-Origin': '*'
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Server error: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log("API data fetched successfully");
+                renderExoplanets(data);
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+                // Use dummy data if API fails
+                renderExoplanetsFromDummy(dummyExoplanetData);
+            });
         }
-        ctx.beginPath();
-        ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
-        ctx.fillStyle = 'white';
-        ctx.fill();
-    });
-};
 
-// Animation loop
-const animateStars = () => {
-    updateStars();
-    requestAnimationFrame(animateStars);
-};
+        // Function to fetch exoplanet data for search filtering
+        function fetchExoplanetData2() {
+            return new Promise((resolve, reject) => {
+                fetch('/api/selector?max=100', {
+                    method: 'GET',
+                    mode: 'cors',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Access-Control-Allow-Origin': '*'
+                    }
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`Server error: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    resolve(data);
+                })
+                .catch(error => {
+                    console.error('Error fetching data for search:', error);
+                    resolve(dummyExoplanetData); // Return dummy data if API fails
+                });
+            });
+        }
 
-// Initialize star field
-const initStarField = () => {
-    setCanvasSize();
-    generateStars(100); // Number of stars
-    animateStars();
-};
+        // Function to render the list of exoplanets from API data
+        const renderExoplanets = (data) => {
+            const exoplanetList = document.getElementById("exoplanet-list");
+            exoplanetList.innerHTML = ""; // Clear previous list items
 
-// Resize canvas on window resize
-window.addEventListener('resize', setCanvasSize);
+            // Sort the planets by distance (systemDistance)
+            const sortedData = Object.values(data).sort((a, b) => a.sy_dist - b.sy_dist);
 
-// Call the function to initialize star field after DOM is loaded
-document.addEventListener('DOMContentLoaded', initStarField);
-</script>
+            // Iterate over the sorted list of exoplanets
+            sortedData.forEach((exoplanet, index) => {
+                const planetName = exoplanet["pl_name"];
+                const systemDistance = exoplanet["sy_dist"];
+                const planetKey = index;
+
+                // Prepare the values, defaulting to "N/A" if not present
+                const lightYears = systemDistance !== undefined ? systemDistance.toFixed(1) : "N/A";
+
+                // Determine planet type based on available data (placeholder logic)
+                let planetType = "Unknown";
+                if (exoplanet["pl_rade"] && exoplanet["pl_rade"] < 1.6) {
+                    planetType = "Rocky";
+                } else if (exoplanet["pl_rade"] && exoplanet["pl_rade"] < 4) {
+                    planetType = "Sub-Neptune";
+                } else if (exoplanet["pl_rade"] && exoplanet["pl_rade"] >= 4) {
+                    planetType = "Gas Giant";
+                }
+
+                // Create the list item with modern formatting
+                const exoplanetItem = document.createElement("li");
+                exoplanetItem.className = "exoplanet-item";
+                exoplanetItem.innerHTML = `
+                    <div class="exoplanet-name">${planetName || "Unknown"}</div>
+                    <div class="exoplanet-details">Distance: ${lightYears} light-years</div>
+                    <span class="planet-tag">${planetType}</span>
+                `;
+
+                // Add click event to update the planet display
+                exoplanetItem.addEventListener('click', () => updatePlanetSprite(planetName, planetKey));
+
+                // Append the list item to the list
+                exoplanetList.appendChild(exoplanetItem);
+            });
+        };
+
+        // Function to render exoplanets from dummy data (fallback)
+        const renderExoplanetsFromDummy = (dummyData) => {
+            const exoplanetList = document.getElementById("exoplanet-list");
+            exoplanetList.innerHTML = ""; // Clear previous list items
+
+            // Sort dummy data by distance
+            const sortedData = dummyData.sort((a, b) => a.distance - b.distance);
+
+            sortedData.forEach((planet, index) => {
+                // Determine planet type based on radius (simple logic for demo)
+                let planetType = "Unknown";
+                if (planet.radius < 1.6) {
+                    planetType = "Rocky";
+                } else if (planet.radius < 4) {
+                    planetType = "Sub-Neptune";
+                } else {
+                    planetType = "Gas Giant";
+                }
+
+                // Create the list item with the specified format
+                const exoplanetItem = document.createElement("li");
+                exoplanetItem.className = "exoplanet-item";
+                exoplanetItem.innerHTML = `
+                    <div class="exoplanet-name">${planet.name || "Unknown"}</div>
+                    <div class="exoplanet-details">Distance: ${planet.distance} light-years • Star: ${planet.star}</div>
+                    <span class="planet-tag">${planetType}</span>
+                `;
+
+                // Add click event to update the planet display
+                exoplanetItem.addEventListener('click', () => updatePlanetSprite(planet.name, index));
+
+                // Append the list item to the list
+                exoplanetList.appendChild(exoplanetItem);
+            });
+        };
+
+        // Function to update planet display when clicked
+        const updatePlanetSprite = (planetName, planetKey) => {
+            const planet = document.getElementById("planet-container");
+            
+            // Clear previous content and show loading state
+            planet.innerHTML = `
+                <div class="empty-state">
+                    <div class="loading-spinner"></div>
+                    <h3>Loading ${planetName}...</h3>
+                </div>
+            `;
+            
+            // Simulate loading (you can remove this setTimeout in production)
+            setTimeout(() => {
+                planet.innerHTML = `
+                    <div class="planet-view">
+                        <h2 class="planet-title">${planetName || "Select a Planet"}</h2>
+                        <div class="planet-image-container">
+                            <img src="images/planet.png" alt="${planetName}" class="exoplanet-image">
+                        </div>
+                        <button class="enter-experience-btn">Enter Experience</button>
+                    </div>
+                `;
+
+                const button = planet.querySelector('.enter-experience-btn');
+                button.addEventListener('click', () => {
+                    console.log('Entering experience for planet:', planetName);
+                    if (planetKey === 36) {
+                        // If the key is 36, redirect to 37
+                        window.location.href = `https://frontend-exosky-final-spaceapps.vercel.app/?key=37`;
+                    } else {
+                        // Otherwise, continue with the original redirect
+                        window.location.href = `https://frontend-exosky-final-spaceapps.vercel.app/?key=${planetKey * 5}`;
+                    }
+                });
+            }, 500);
+        };
+
+        // Function to filter exoplanets based on search input
+        const filterExoplanets = async (searchTerm) => {
+            // Get the data (either from API or dummy data)
+            const data = await fetchExoplanetData2();
+            
+            if (Array.isArray(data)) {
+                // Handle dummy data format
+                const filteredData = data.filter(planet => 
+                    planet.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                    planet.star.toLowerCase().includes(searchTerm.toLowerCase())
+                );
+                renderExoplanetsFromDummy(filteredData);
+            } else {
+                // Handle API data format
+                const filteredData = Object.values(data).filter(planet => {
+                    const name = planet.pl_name || "";
+                    const star = planet.pl_hostname || "";
+                    return name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                           star.toLowerCase().includes(searchTerm.toLowerCase());
+                });
+                
+                // Create a new object with the filtered data
+                const filteredObj = {};
+                filteredData.forEach((planet, index) => {
+                    filteredObj[index] = planet;
+                });
+                
+                renderExoplanets(filteredObj);
+            }
+        };
+
+        // Event listener for search input
+        document.getElementById("search-input").addEventListener("input", (event) => {
+            const searchTerm = event.target.value;
+            if (searchTerm.length >= 2) {
+                filterExoplanets(searchTerm);
+            } else if (searchTerm.length === 0) {
+                // If search field is cleared, fetch all data again
+                fetchExoplanetData();
+            }
+        });
+
+        // Fetch and render data on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize star field
+            initStarField();
+            
+            // Fetch exoplanet data
+            fetchExoplanetData();
+        });
+    </script>
 </body>
 </html>
